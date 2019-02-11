@@ -53,25 +53,25 @@ def build():
 
     subprocess.check_call(['wget', '-N', '-P', 'inputs', 'http://downloads.sourceforge.net/project/osslsigncode/osslsigncode/osslsigncode-1.7.1.tar.gz'])
     subprocess.check_call(['wget', '-N', '-P', 'inputs', 'https://bitcoincore.org/cfields/osslsigncode-Backports-to-1.7.1.patch'])
-    subprocess.check_call(['make', '-C', '../paws/depends', 'download', 'SOURCES_PATH=' + os.getcwd() + '/cache/common'])
+    subprocess.check_call(['make', '-C', '../paws-core/depends', 'download', 'SOURCES_PATH=' + os.getcwd() + '/cache/common'])
 
     if args.linux:
         print('\nCompiling ' + args.version + ' Linux')
-        subprocess.check_call(['bin/gbuild', '-j', args.jobs, '-m', args.memory, '--commit', 'paws='+args.commit, '--url', 'paws='+args.url, '../paws/contrib/gitian-descriptors/gitian-linux.yml'])
-        subprocess.check_call(['bin/gsign', '-p', args.sign_prog, '--signer', args.signer, '--release', args.version+'-linux', '--destination', '../gitian.sigs/', '../paws/contrib/gitian-descriptors/gitian-linux.yml'])
+        subprocess.check_call(['bin/gbuild', '-j', args.jobs, '-m', args.memory, '--commit', 'paws='+args.commit, '--url', 'paws='+args.url, '../paws-core/contrib/gitian-descriptors/gitian-linux.yml'])
+        subprocess.check_call(['bin/gsign', '-p', args.sign_prog, '--signer', args.signer, '--release', args.version+'-linux', '--destination', '../gitian.sigs/', '../paws-core/contrib/gitian-descriptors/gitian-linux.yml'])
         subprocess.check_call('mv build/out/paws-*.tar.gz build/out/src/paws-*.tar.gz ../paws-binaries/'+args.version, shell=True)
 
     if args.windows:
         print('\nCompiling ' + args.version + ' Windows')
-        subprocess.check_call(['bin/gbuild', '-j', args.jobs, '-m', args.memory, '--commit', 'paws='+args.commit, '--url', 'paws='+args.url, '../paws/contrib/gitian-descriptors/gitian-win.yml'])
-        subprocess.check_call(['bin/gsign', '-p', args.sign_prog, '--signer', args.signer, '--release', args.version+'-win-unsigned', '--destination', '../gitian.sigs/', '../paws/contrib/gitian-descriptors/gitian-win.yml'])
+        subprocess.check_call(['bin/gbuild', '-j', args.jobs, '-m', args.memory, '--commit', 'paws='+args.commit, '--url', 'paws='+args.url, '../paws-core/contrib/gitian-descriptors/gitian-win.yml'])
+        subprocess.check_call(['bin/gsign', '-p', args.sign_prog, '--signer', args.signer, '--release', args.version+'-win-unsigned', '--destination', '../gitian.sigs/', '../paws-core/contrib/gitian-descriptors/gitian-win.yml'])
         subprocess.check_call('mv build/out/paws-*-win-unsigned.tar.gz inputs/', shell=True)
         subprocess.check_call('mv build/out/paws-*.zip build/out/paws-*.exe ../paws-binaries/'+args.version, shell=True)
 
     if args.macos:
         print('\nCompiling ' + args.version + ' MacOS')
-        subprocess.check_call(['bin/gbuild', '-j', args.jobs, '-m', args.memory, '--commit', 'paws='+args.commit, '--url', 'paws='+args.url, '../paws/contrib/gitian-descriptors/gitian-osx.yml'])
-        subprocess.check_call(['bin/gsign', '-p', args.sign_prog, '--signer', args.signer, '--release', args.version+'-osx-unsigned', '--destination', '../gitian.sigs/', '../paws/contrib/gitian-descriptors/gitian-osx.yml'])
+        subprocess.check_call(['bin/gbuild', '-j', args.jobs, '-m', args.memory, '--commit', 'paws='+args.commit, '--url', 'paws='+args.url, '../paws-core/contrib/gitian-descriptors/gitian-osx.yml'])
+        subprocess.check_call(['bin/gsign', '-p', args.sign_prog, '--signer', args.signer, '--release', args.version+'-osx-unsigned', '--destination', '../gitian.sigs/', '../paws-core/contrib/gitian-descriptors/gitian-osx.yml'])
         subprocess.check_call('mv build/out/paws-*-osx-unsigned.tar.gz inputs/', shell=True)
         subprocess.check_call('mv build/out/paws-*.tar.gz build/out/paws-*.dmg ../paws-binaries/'+args.version, shell=True)
 
@@ -97,16 +97,16 @@ def sign():
     if args.windows:
         print('\nSigning ' + args.version + ' Windows')
         subprocess.check_call('cp inputs/paws-' + args.version + '-win-unsigned.tar.gz inputs/paws-win-unsigned.tar.gz', shell=True)
-        subprocess.check_call(['bin/gbuild', '-i', '--commit', 'signature='+args.commit, '../paws/contrib/gitian-descriptors/gitian-win-signer.yml'])
-        subprocess.check_call(['bin/gsign', '-p', args.sign_prog, '--signer', args.signer, '--release', args.version+'-win-signed', '--destination', '../gitian.sigs/', '../paws/contrib/gitian-descriptors/gitian-win-signer.yml'])
+        subprocess.check_call(['bin/gbuild', '-i', '--commit', 'signature='+args.commit, '../paws-core/contrib/gitian-descriptors/gitian-win-signer.yml'])
+        subprocess.check_call(['bin/gsign', '-p', args.sign_prog, '--signer', args.signer, '--release', args.version+'-win-signed', '--destination', '../gitian.sigs/', '../paws-core/contrib/gitian-descriptors/gitian-win-signer.yml'])
         subprocess.check_call('mv build/out/paws-*win64-setup.exe ../paws-binaries/'+args.version, shell=True)
         subprocess.check_call('mv build/out/paws-*win32-setup.exe ../paws-binaries/'+args.version, shell=True)
 
     if args.macos:
         print('\nSigning ' + args.version + ' MacOS')
         subprocess.check_call('cp inputs/paws-' + args.version + '-osx-unsigned.tar.gz inputs/paws-osx-unsigned.tar.gz', shell=True)
-        subprocess.check_call(['bin/gbuild', '-i', '--commit', 'signature='+args.commit, '../paws/contrib/gitian-descriptors/gitian-osx-signer.yml'])
-        subprocess.check_call(['bin/gsign', '-p', args.sign_prog, '--signer', args.signer, '--release', args.version+'-osx-signed', '--destination', '../gitian.sigs/', '../paws/contrib/gitian-descriptors/gitian-osx-signer.yml'])
+        subprocess.check_call(['bin/gbuild', '-i', '--commit', 'signature='+args.commit, '../paws-core/contrib/gitian-descriptors/gitian-osx-signer.yml'])
+        subprocess.check_call(['bin/gsign', '-p', args.sign_prog, '--signer', args.signer, '--release', args.version+'-osx-signed', '--destination', '../gitian.sigs/', '../paws-core/contrib/gitian-descriptors/gitian-osx-signer.yml'])
         subprocess.check_call('mv build/out/paws-osx-signed.dmg ../paws-binaries/'+args.version+'/paws-'+args.version+'-osx.dmg', shell=True)
 
     os.chdir(workdir)
@@ -129,23 +129,23 @@ def verify():
 
     if args.linux:
         print('\nVerifying v'+args.version+' Linux\n')
-        subprocess.check_call(['bin/gverify', '-v', '-d', '../gitian.sigs/', '-r', args.version+'-linux', '../paws/contrib/gitian-descriptors/gitian-linux.yml'])
+        subprocess.check_call(['bin/gverify', '-v', '-d', '../gitian.sigs/', '-r', args.version+'-linux', '../paws-core/contrib/gitian-descriptors/gitian-linux.yml'])
         print('\nVerifying v'+args.version+' Linux\n')
-        subprocess.check_call(['bin/gverify', '-v', '-d', '../gitian.sigs/', '-r', args.version+'-linux', '../paws/contrib/gitian-descriptors/gitian-linux.yml'])
+        subprocess.check_call(['bin/gverify', '-v', '-d', '../gitian.sigs/', '-r', args.version+'-linux', '../paws-core/contrib/gitian-descriptors/gitian-linux.yml'])
 
     if args.windows:
         print('\nVerifying v'+args.version+' Windows\n')
-        subprocess.check_call(['bin/gverify', '-v', '-d', '../gitian.sigs/', '-r', args.version+'-win-unsigned', '../paws/contrib/gitian-descriptors/gitian-win.yml'])
+        subprocess.check_call(['bin/gverify', '-v', '-d', '../gitian.sigs/', '-r', args.version+'-win-unsigned', '../paws-core/contrib/gitian-descriptors/gitian-win.yml'])
         if args.sign:
             print('\nVerifying v'+args.version+' Signed Windows\n')
-            subprocess.check_call(['bin/gverify', '-v', '-d', '../gitian.sigs/', '-r', args.version+'-win-signed', '../paws/contrib/gitian-descriptors/gitian-win-signer.yml'])
+            subprocess.check_call(['bin/gverify', '-v', '-d', '../gitian.sigs/', '-r', args.version+'-win-signed', '../paws-core/contrib/gitian-descriptors/gitian-win-signer.yml'])
 
     if args.macos:
         print('\nVerifying v'+args.version+' MacOS\n')
-        subprocess.check_call(['bin/gverify', '-v', '-d', '../gitian.sigs/', '-r', args.version+'-osx-unsigned', '../paws/contrib/gitian-descriptors/gitian-osx.yml'])
+        subprocess.check_call(['bin/gverify', '-v', '-d', '../gitian.sigs/', '-r', args.version+'-osx-unsigned', '../paws-core/contrib/gitian-descriptors/gitian-osx.yml'])
         if args.sign:
             print('\nVerifying v'+args.version+' Signed MacOS\n')
-            subprocess.check_call(['bin/gverify', '-v', '-d', '../gitian.sigs/', '-r', args.version+'-osx-signed', '../paws/contrib/gitian-descriptors/gitian-osx-signer.yml'])
+            subprocess.check_call(['bin/gverify', '-v', '-d', '../gitian.sigs/', '-r', args.version+'-osx-signed', '../paws-core/contrib/gitian-descriptors/gitian-osx-signer.yml'])
 
     os.chdir(workdir)
 
