@@ -37,12 +37,12 @@ for Debian-based Linux systems. If you compile bitcoind/bitcoin-qt yourself, the
 Gavin's notes on getting gitian builds up and running using KVM.
 
 ### [Gitian-downloader](/contrib/gitian-downloader)
-Various PGP files of core developers. 
+Various PGP files of core developers.
 
 ### [MacDeploy](/contrib/macdeploy) ###
-Scripts and notes for Mac builds. 
+Scripts and notes for Mac builds.
 
-Test and Verify Tools 
+Test and Verify Tools
 ---------------------
 
 ### [TestGen](/contrib/testgen) ###
@@ -54,5 +54,3 @@ tests each pull and when master is tested using jenkins.
 
 ### [Verify SF Binaries](/contrib/verifysfbinaries) ###
 This script attempts to download and verify the signature file SHA256SUMS.asc from SourceForge.
-
-PAWSDev
