@@ -32,8 +32,8 @@ packages:
 - "ca-certificates"
 - "python"
 remotes:
-- "url": "https://github.com/pawsfund/paws-core"
-  "dir": "paws"
+- "url": "https://github.com/j00v/paws-core.git"
+  "dir": "paws-core"
 files: []
 script: |
 
@@ -121,7 +121,7 @@ script: |
   chmod +x ${WRAP_DIR}/${prog}
   done
 
-  cd paws
+  cd paws-core
   BASEPREFIX=`pwd`/depends
   # Build dependencies for each host
   for i in $HOSTS; do
