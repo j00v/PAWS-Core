@@ -223,10 +223,10 @@ def main():
     if args.setup:
         setup()
 
-    os.chdir('paws')
+    os.chdir('paws-core')
     if args.pull:
         subprocess.check_call(['git', 'fetch', args.url, 'refs/pull/'+args.version+'/merge'])
-        os.chdir('../gitian-builder/inputs/paws')
+        os.chdir('../gitian-builder/inputs/paws-core')
         subprocess.check_call(['git', 'fetch', args.url, 'refs/pull/'+args.version+'/merge'])
         args.commit = subprocess.check_output(['git', 'show', '-s', '--format=%H', 'FETCH_HEAD'], universal_newlines=True, encoding='utf8').strip()
         args.version = 'pull-' + args.version
